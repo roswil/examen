@@ -1,18 +1,18 @@
 <template>
     <h1>Listado de Pelicula
     </h1>
-
+    <form class="form" >
+    <input class="input" v-model="title" type="text" name="title" placeholder="Titulo a buscar" />
+   
+    <button class="btn btn-primary" @click="buscar">Buscar</button>
+  </form>
+  
     <div  v-for="p in peliculas" :key="p.id">
     {{p.Title}}
     </div>
 
-    <button 
-        class="btn btn-primary" 
-        data-bs-target="#collapseTarget" 
-        data-bs-toggle="collapse">
-        Adicionar
-    </button>
-    
+   
+        
 </template>
 <script>
 import axios from 'axios'
@@ -22,7 +22,8 @@ export default{
     
 data(){
     return{
-         peliculas:[]
+         peliculas:[],
+         title: ""
     };
 },
 mounted(){
@@ -31,6 +32,18 @@ mounted(){
         console.log(response.data.Search);
         this.peliculas=response.data.Search
       })
-}
+},
+methods: {
+    async buscar() {
+        console.log(this.title);
+    axios.get ('http://www.omdbapi.com/?apikey=ba9b1dc&s='+this.title)
+    .then((response) => {
+        console.log(response.data.Search);
+        this.peliculas=response.data.Search
+      })
+        
+    
+    }
+  }
 }
 </script>
